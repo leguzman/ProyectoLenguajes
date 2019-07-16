@@ -24,7 +24,7 @@ declaracionTipo
     ;
 
 declaracionClaseOInterfaz
-    :   modificadoresDeClase (declaracionClase | declaracionInterfaz)
+    :    (declaracionClase | declaracionInterfaz)
     ;
 
 modificadoresDeClase
@@ -51,7 +51,7 @@ declaracionClase
     ;
 
 normaldeclaracionClase
-    :   'clase' IDENTIFICADOR typeParameters?
+    :   'clase' modificadoresDeClase IDENTIFICADOR typeParameters?
         ('extends' tipo)?
         ('implements' typeList)?
         classBody
@@ -308,7 +308,7 @@ localVariableDeclarationStatement
     ;
 
 localVariableDeclaration
-    :   variable tipo variableDeclarators
+    :  tipo   variableDeclarators
     ;
 /*
 variableModifiers
@@ -463,6 +463,7 @@ proposicion
  | asignacion PCOMA
  | IDENTIFICADOR lista_parsv PCOMA //Llamar función o procedimiento
  | LLAVEIZ sec_proposiciones LLAVEDE
+    | IDENTIFICADOR IDENTIFICADOR '=' 'nuevo' creator PCOMA
  | OTRO {System.err.println("Caracter desconocido: " + $OTRO.text);}
  ;
 
@@ -523,11 +524,85 @@ proc_senten
 funcion
  : LLAVEIZ sec_proposiciones PCOMA LLAVEDE
  ;
- primary
-     :   'this' arguments?
-     |   'void' '.' 'clase'
-     ;
-
+primary
+: parExpression
+| 'this' arguments?
+| 'super' superSuffix
+| literal
+| 'new' creator
+|	nonWildcardTypeArguments (explicitGenericInvocationSuffix | 'this' arguments)
+| IDENTIFICADOR ('.' IDENTIFICADOR)* identifierSuffix?
+| tipo ('[' ']')* '.' 'class'
+| 'void' '.' 'class'
+;
+parExpression
+: '(' expresion ')'
+;
+literal
+: IntegerLiteral
+| FloatingPointLiteral
+| CharacterLiteral
+| StringLiteral
+| BooleanLiteral
+| 'null'
+;
+creator
+: nonWildcardTypeArguments createdName classCreatorRest
+| createdName (arrayCreatorRest | classCreatorRest)
+;
+createdName
+: IDENTIFICADOR typeArgumentsOrDiamond? ('.' IDENTIFICADOR typeArgumentsOrDiamond?)*
+|	tipo
+;
+innerCreator
+: IDENTIFICADOR nonWildcardTypeArgumentsOrDiamond? classCreatorRest
+;
+arrayCreatorRest
+: '['
+( ']' ('[' ']')* arrayInitializer
+| expresion ']' ('[' expresion ']')* ('[' ']')*
+)
+;
+classCreatorRest
+: arguments classBody?
+;
+explicitGenericInvocation
+: nonWildcardTypeArguments explicitGenericInvocationSuffix
+;
+nonWildcardTypeArguments
+: '<' typeList '>'
+;
+typeArgumentsOrDiamond
+:	'<' '>'
+|	typeArguments
+;
+nonWildcardTypeArgumentsOrDiamond
+:	'<' '>'
+|	nonWildcardTypeArguments
+;
+typeArguments
+: '<' typeArgument (',' typeArgument)* '>'
+;
+typeArgument
+: tipo
+| '?' (('extends' | 'super') tipo)?
+;
+explicitGenericInvocationSuffix
+:	'super' superSuffix
+|	Identifier arguments
+;
+selector
+: '.' Identifier arguments?
+|	'.' explicitGenericInvocation
+| '.' 'this'
+| '.' 'super' superSuffix
+| '.' 'new' nonWildcardTypeArguments? innerCreator
+| '[' expresion ']'
+;
+superSuffix
+: arguments
+| '.' Identifier arguments?
+;
  identifierSuffix
      :   ('[' ']')+ '.' 'clase'
      |   '[' expresion ']'
@@ -542,9 +617,6 @@ arguments
 expressionList
         :   expresion (',' expresion)*
         ;
-selector
-    :     '.' 'esta'
-    ;
 
 //Expresiones regulares para tokens
 COMENTARIO : ('#' ~[\r\n]*  | '/*' .*? '*/') -> skip;
