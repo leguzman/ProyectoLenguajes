@@ -1,5 +1,4 @@
-package gen;
-// Generated from /home/luis/Descargas/Diunisio/src/Diunisio.g4 by ANTLR 4.7.2
+package gen;// Generated from /home/luis/Descargas/Diunisio/src/Diunisio.g4 by ANTLR 4.7.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -383,6 +382,12 @@ public interface DiunisioVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatement(DiunisioParser.StatementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#statementExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStatementExpression(DiunisioParser.StatementExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link DiunisioParser#annotations}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -425,6 +430,12 @@ public interface DiunisioVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitElementValueArrayInitializer(DiunisioParser.ElementValueArrayInitializerContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#unaryExpressionNotPlusMinus}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnaryExpressionNotPlusMinus(DiunisioParser.UnaryExpressionNotPlusMinusContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link DiunisioParser#algoritmo}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -448,6 +459,24 @@ public interface DiunisioVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitExpresion(DiunisioParser.ExpresionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#expresionCondicional}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpresionCondicional(DiunisioParser.ExpresionCondicionalContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#assignmentOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignmentOperator(DiunisioParser.AssignmentOperatorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#unaryExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnaryExpression(DiunisioParser.UnaryExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DiunisioParser#variable}.
 	 * @param ctx the parse tree
@@ -484,6 +513,18 @@ public interface DiunisioVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitTipo(DiunisioParser.TipoContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitType(DiunisioParser.TypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#classOrInterfaceType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassOrInterfaceType(DiunisioParser.ClassOrInterfaceTypeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DiunisioParser#bloque}.
 	 * @param ctx the parse tree
@@ -591,6 +632,102 @@ public interface DiunisioVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrimary(DiunisioParser.PrimaryContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#parExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParExpression(DiunisioParser.ParExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#literal}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLiteral(DiunisioParser.LiteralContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#creator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreator(DiunisioParser.CreatorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#createdName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreatedName(DiunisioParser.CreatedNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#innerCreator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInnerCreator(DiunisioParser.InnerCreatorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#arrayCreatorRest}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayCreatorRest(DiunisioParser.ArrayCreatorRestContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#classCreatorRest}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassCreatorRest(DiunisioParser.ClassCreatorRestContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#explicitGenericInvocation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExplicitGenericInvocation(DiunisioParser.ExplicitGenericInvocationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#nonWildcardTypeArguments}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNonWildcardTypeArguments(DiunisioParser.NonWildcardTypeArgumentsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#typeArgumentsOrDiamond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypeArgumentsOrDiamond(DiunisioParser.TypeArgumentsOrDiamondContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#nonWildcardTypeArgumentsOrDiamond}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNonWildcardTypeArgumentsOrDiamond(DiunisioParser.NonWildcardTypeArgumentsOrDiamondContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#typeArguments}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypeArguments(DiunisioParser.TypeArgumentsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#typeArgument}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypeArgument(DiunisioParser.TypeArgumentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#explicitGenericInvocationSuffix}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExplicitGenericInvocationSuffix(DiunisioParser.ExplicitGenericInvocationSuffixContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#selector}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSelector(DiunisioParser.SelectorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DiunisioParser#superSuffix}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSuperSuffix(DiunisioParser.SuperSuffixContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link DiunisioParser#identifierSuffix}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -608,10 +745,4 @@ public interface DiunisioVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitExpressionList(DiunisioParser.ExpressionListContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link DiunisioParser#selector}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSelector(DiunisioParser.SelectorContext ctx);
 }

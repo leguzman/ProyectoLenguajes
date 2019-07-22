@@ -97,7 +97,7 @@ interfaceBody
 
 classBodyDeclaration
     :   ';'
-    |   'estatica'? block
+    |   'estatica'? bloque
     |   modificadores memberDecl
     ;
 
@@ -308,7 +308,7 @@ localVariableDeclarationStatement
     ;
 
 localVariableDeclaration
-    :  tipo   variableDeclarators
+    :  type   variableDeclarators
     ;
 /*
 variableModifiers
@@ -318,7 +318,9 @@ variableModifiers
 statement
     :	block
     |   bloque
-    |   proposicion/*
+    |   proposicion
+    |   statementExpression ';'
+    /*
     |   ASSERT expression (':' expression)? ';'
     |   'if' parExpression statement ('else' statement)?
     |   'for' '(' forControl ')' statement
@@ -332,10 +334,13 @@ statement
     |   'throw' expression ';'
     |   'break' Identifier? ';'
     |   'continue' Identifier? ';'
-    |   ';'
-    |   statementExpression ';'*/
+    |   ';'*/
+
     |   IDENTIFICADOR ':' statement
     ;
+    statementExpression
+        :   expresion
+        ;
     annotations
     :   annotation+
     ;
@@ -365,6 +370,10 @@ elementValue
 elementValueArrayInitializer
     :   '{' (elementValue (',' elementValue)*)? (',')? '}'
     ;
+unaryExpressionNotPlusMinus
+    :  primary selector ('++'|'--')?
+    |  primary selector* ('++'|'--')?
+    ;
 //Símbolo inicial
 algoritmo
  : ALGORITMO IDENTIFICADOR (PAREN_AP lista_ids PAREN_CI)? DOSPUNTOS bloque TERMINA
@@ -376,22 +385,51 @@ lista_ids
  |
  ;
 
-//Expresiones simples
-exp_simple
- : PAREN_AP exp_simple PAREN_CI
- | (op=(SUMA | MENOS))? termino (op2=(SUMA | MENOS | O) termino)*
- | termino
- ;
+//Expresiones simples/*
+//exp_simpleprop
+ //: PAREN_AP exp_simple PAREN_CI
+ //| (op=(SUMA | MENOS))? expresionCondicional (op2=(SUMA | MENOS | O) expresionCondicional)*
+ //| unaryExpressionNotPlusMinus
+ //;
+ exp_simple
+  : PAREN_AP exp_simple PAREN_CI
+  | (op=(SUMA | MENOS))? termino (op2=(SUMA | MENOS | O) termino)*
+  | termino
+  ;
 
 //Expresiones compuestas
 expresion
- : PAREN_AP expresion PAREN_CI
+ :  PAREN_AP expresion PAREN_CI
  | exp_simple op=(IGUAL | DIFERENTE | MEN_IGUAL | MAY_IGUAL | MENOR | MAYOR) exp_simple
  | PAREN_AP exp_simple PAREN_CI
+ |expresionCondicional (assignmentOperator expresion)?
  | exp_simple
  | NO expresion
  ;
-
+expresionCondicional
+ : unaryExpression
+ ;
+ assignmentOperator
+     :   '='
+     |   '+='
+     |   '-='
+     |   '*='
+     |   '/='
+     |   '&='
+     |   '|='
+     |   '^='
+     |   '%='
+     |   '<<='
+     |   '>>='
+     |   '>>>='
+     ;
+ unaryExpression
+     :   '+' unaryExpression
+     |   '-' unaryExpression
+     |   '++' unaryExpression
+     |   '--' unaryExpression
+     |   unaryExpressionNotPlusMinus
+     ;
 //Definición de variable
 variable
  : IDENTIFICADOR conjunto
@@ -438,6 +476,16 @@ conjunto
 //Identificador de tipo de retorno
 tipo
  : INT | FLOAT | STRING | BOOL | MATRIZ | VECTOR;
+type
+	:	classOrInterfaceType ('[' ']')*
+	|	tipo ('[' ']')*
+	;
+
+classOrInterfaceType
+	:	IDENTIFICADOR typeArguments? ('.' IDENTIFICADOR typeArguments? )*
+	;
+
+
 
 //Bloque
 bloque
@@ -463,7 +511,6 @@ proposicion
  | asignacion PCOMA
  | IDENTIFICADOR lista_parsv PCOMA //Llamar función o procedimiento
  | LLAVEIZ sec_proposiciones LLAVEDE
-    | IDENTIFICADOR IDENTIFICADOR '=' 'nuevo' creator PCOMA
  | OTRO {System.err.println("Caracter desconocido: " + $OTRO.text);}
  ;
 
@@ -526,25 +573,26 @@ funcion
  ;
 primary
 : parExpression
-| 'this' arguments?
+| 'esta' arguments?
 | 'super' superSuffix
+| termino
 | literal
-| 'new' creator
+| 'nuevo' creator
 |	nonWildcardTypeArguments (explicitGenericInvocationSuffix | 'this' arguments)
 | IDENTIFICADOR ('.' IDENTIFICADOR)* identifierSuffix?
 | tipo ('[' ']')* '.' 'class'
 | 'void' '.' 'class'
+
 ;
 parExpression
 : '(' expresion ')'
 ;
 literal
-: IntegerLiteral
-| FloatingPointLiteral
-| CharacterLiteral
-| StringLiteral
-| BooleanLiteral
-| 'null'
+: ENTERO
+| FLOAT
+| CADENA
+| BOOL
+| NULO
 ;
 creator
 : nonWildcardTypeArguments createdName classCreatorRest
@@ -589,10 +637,10 @@ typeArgument
 ;
 explicitGenericInvocationSuffix
 :	'super' superSuffix
-|	Identifier arguments
+|	IDENTIFICADOR arguments
 ;
 selector
-: '.' Identifier arguments?
+: '.' IDENTIFICADOR arguments?
 |	'.' explicitGenericInvocation
 | '.' 'this'
 | '.' 'super' superSuffix
@@ -601,7 +649,7 @@ selector
 ;
 superSuffix
 : arguments
-| '.' Identifier arguments?
+| '.' IDENTIFICADOR arguments?
 ;
  identifierSuffix
      :   ('[' ']')+ '.' 'clase'

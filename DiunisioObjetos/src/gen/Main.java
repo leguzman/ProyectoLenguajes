@@ -26,6 +26,7 @@ public class Main {
         CommonTokenStream tokens = new CommonTokenStream( lexer );
         DiunisioParser parser = new DiunisioParser( tokens );
         ParseTree tree = parser.compilationUnit();
+       // DiunisioVisitor visitor = new DiunisioBaseVisitor();
         EvalVisitor visitor = new EvalVisitor();
         visitor.visit(tree);/**/
 /*

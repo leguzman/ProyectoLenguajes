@@ -1,4 +1,5 @@
 package gen;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -75,7 +76,17 @@ public class EvalVisitor extends DiunisioBaseVisitor<Valor> {
         }
         return new Valor(null);
     }
-
+    //visitor de creator
+    @Override
+    public  Valor visitNormaldeclaracionClase(DiunisioParser.NormaldeclaracionClaseContext ctx) {
+        if(ctx.IDENTIFICADOR() != null) {
+        	new Valor(ctx.IDENTIFICADOR().getText());
+            return visitChildren(ctx);
+            
+        }
+        else
+            return new Valor(null);
+    }
     //Visitor de las producciones de Bloque
     @Override
     public Valor visitBloque(DiunisioParser.BloqueContext ctx) {
@@ -609,7 +620,55 @@ public class EvalVisitor extends DiunisioBaseVisitor<Valor> {
         }
         return mem.put(id, valor);
     }
-
+    
+    //Visitor de las producciones de la evaluación de una expresión unitaria
+    @Override
+    public Valor visitPrimary(DiunisioParser.PrimaryContext ctx) 
+    {
+    	if(ctx.literal() != null){
+            return this.visit(ctx.literal());
+        }
+    	else if(ctx.termino() != null){
+            return this.visit(ctx.termino());
+        }
+    	 return new Valor(null);
+    };
+    
+    @Override
+    public Valor visitSelector(DiunisioParser.SelectorContext ctx) 
+    {
+    	if(ctx.IDENTIFICADOR() != null ){
+    		return new Valor(ctx.IDENTIFICADOR().getText());
+        }
+    	 
+    	 return new Valor(null);
+    };
+    
+  //Visitor de las producciones de la evaluación de una expresión unitaria
+    @Override
+    public Valor visitUnaryExpressionNotPlusMinus(DiunisioParser.UnaryExpressionNotPlusMinusContext ctx) 
+    {
+    	Valor a = null ;
+    	if(ctx.selector() != null ){
+        //    a= this.visit(ctx.selector(0));
+        }
+    	
+    	if(ctx.primary() != null  ){
+            return new Valor (this.visit(ctx.primary()));
+        }
+    	 
+    	 return new Valor(null);
+    };
+    
+  //Visitor de las producciones de la evaluación de una expresión unitaria
+    @Override
+    public Valor visitUnaryExpression(DiunisioParser.UnaryExpressionContext ctx) 
+    {
+    	if(ctx.unaryExpressionNotPlusMinus() != null){
+            return this.visit(ctx.unaryExpressionNotPlusMinus());
+        }
+    	 return new Valor(null);
+    };
     //Visitor de las producciones de la evaluación de una expresión
     @Override
     public Valor visitExpresion(DiunisioParser.ExpresionContext ctx) {
@@ -618,6 +677,9 @@ public class EvalVisitor extends DiunisioBaseVisitor<Valor> {
         }
         if(ctx.expresion() != null){
             return this.visit(ctx.expresion());
+        }
+        if(ctx.expresionCondicional() != null){
+            return this.visit(ctx.expresionCondicional());
         }
         if (ctx.op != null) {
             switch (ctx.op.getText()) {

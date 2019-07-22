@@ -4,20 +4,22 @@ clase publica  Carro{
     publica cadena _color;
     publica estatica void Carro(cadena placa, cadena color){
 
-           _placa = placa;
+           _placa = "XASD";
            _color = color;
 
-           imprimirPantalla("soy un carro");
+           imprimirPantalla("soy un carro" + Carro);
            imprimirPantalla("mi placa es "+_placa);
            imprimirPantalla("soy color "+_color);
         }
 
 }
+
 clase publica pruebas{
    publica estatica pruebas(){
     Carro car = nuevo carro("XSDSD234","Verde");
     
-            imprimirPantalla("soy un carro");
-           imprimirPantalla("mi placa es "+ car.placa);
-   }
+    car.placa = "WDSDAS";
+    cadena imprimir=  car._placa;
+    imprimirPantalla("mi placa es pruebas"+imprimir+"pruebasss"); 
+   }    
 }
